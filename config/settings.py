@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 
-from django.conf.global_settings import SERVER_EMAIL, DEFAULT_FROM_EMAIL
+from django.conf.global_settings import SERVER_EMAIL, DEFAULT_FROM_EMAIL, LOGOUT_REDIRECT_URL
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -153,3 +153,4 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_REDIRECT_URL = 'sending_messages:main'
+LOGOUT_REDIRECT_URL = 'users:login'
