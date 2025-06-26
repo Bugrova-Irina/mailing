@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 
-from django.conf.global_settings import SERVER_EMAIL, DEFAULT_FROM_EMAIL, LOGOUT_REDIRECT_URL
 from dotenv import load_dotenv
 from pathlib import Path
 

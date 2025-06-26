@@ -1,13 +1,36 @@
 import secrets
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView, UpdateView
 
-from users.forms import UserRegisterForm
+from users.forms import UserRegisterForm, UserForm
 from users.models import User
 from config.settings import EMAIL_HOST_USER
+
+
+class UserDetailView(DetailView):
+    """Класс для просмотра профиля пользователя"""
+    model = User
+    template_name = 'users/profile.html'
+    context_object_name = 'user'
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    """Класс для редактирования информации о пользователе"""
+    model = User
+    form_class = UserForm
+
+    def get_object(self, queryset=None):
+        # Пользователь может редактировать только свой профиль
+        return self.request.user
+
+    # после сохранения данных перенаправляем пользователя на страницу профиля
+    def get_success_url(self):
+        # Динамически формируем url с использованием pk текущего пользователя
+        return reverse('users:profile', kwargs={'pk': self.object.pk})
 
 
 class UserCreateView(CreateView):

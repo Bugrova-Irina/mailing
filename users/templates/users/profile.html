@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h1>Профиль</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+            <div class="card">
+                <img src="{{ user.avatar.url }}">
+                <div class="card-body">
+                    <p class="card-text">Фамилия: {{ user.last_name }}</p>
+                    <p class="card-text">Имя: {{ user.first_name }}</p>
+                    <p class="card-text">E-mail: {{ user.email }}</p>
+                    <p class="card-text">Телефон: {{ user.phone }}</p>
+                    <p class="card-text">Страна: {{ user.country }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a class="btn btn-sm btn-primary" href="{% url 'users:profile_update' user.pk %}" role="button">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

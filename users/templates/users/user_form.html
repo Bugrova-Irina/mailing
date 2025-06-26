@@ -4,7 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 text-center">
+            {% if object %}
+            <h1>Редактирование профиля</h1>
+            {% else %}
             <h1>Регистрация на сайте</h1>
+            {% endif %}
         </div>
     </div>
     <div class="row justify-content-center">
@@ -17,7 +21,11 @@
                     </div>
                     <div class="card-footer text-center">
                         <button type="submit" class="btn btn-primary w-100">
+                            {% if object %}
+                            Сохранить
+                            {% else %}
                             Регистрация
+                            {% endif %}
                         </button>
                     </div>
                 </div>

@@ -1,8 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import BooleanField
+from django.forms import BooleanField, forms, ModelForm
 
 from users.models import User
-
 
 
 class StyleFormMixin:
@@ -30,3 +30,17 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
         # удаляем стандартное поле username, чтобы не было конфликта между
         # кастомной моделью пользователя и стандартной формой регистрации Django
         self.fields.pop('username', None)
+
+    def clean_email(self):
+        """Проверяем email нового пользователя на уникальность"""
+        email = self.cleaned_data['email']
+        if get_user_model().objects.filter(email=email).exists:
+            raise forms.ValidationError('Такой E-mail уже существует!')
+        return email
+
+
+class UserForm(StyleFormMixin, ModelForm):
+    """Форма редактирования пользователя"""
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'phone', 'country', 'avatar',)

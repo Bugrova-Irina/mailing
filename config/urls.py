@@ -23,4 +23,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sending_messages/", include("sending_messages.urls", namespace="sending_messages")),
     path("users/", include("users.urls", namespace="users")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
