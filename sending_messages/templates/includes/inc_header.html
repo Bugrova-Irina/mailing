@@ -1,4 +1,7 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Сервис рассылок</h1>
     <p class="lead">Создавайте рассылки. Управляйте рассылками.</p>
+    {% if user.is_authenticated %}
+    <h3>Добро пожаловать на сайт, {{ user.email }}!</h3>
+    {% endif %}
 </div>

@@ -9,6 +9,7 @@ from users.forms import UserRegisterForm
 from users.models import User
 from config.settings import EMAIL_HOST_USER
 
+
 class UserCreateView(CreateView):
     """Класс для создания пользователя"""
     model = User
@@ -33,7 +34,8 @@ class UserCreateView(CreateView):
         )
         return super().form_valid(form)
 
-def email_verification(token):
+
+def email_verification(request, token):
     """
     если пользователь перешел по ссылке из письма,
     он может авторизоваться на сайте
@@ -42,4 +44,3 @@ def email_verification(token):
     user.is_active = True
     user.save()
     return redirect(reverse('users:login'))
-

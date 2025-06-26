@@ -5,6 +5,15 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView, C
 from sending_messages.models import MailingListRecipient, Letter, Mailing
 
 
+class MainPageView(DetailView):
+    """Класс для отображения главной страницы"""
+    template_name = 'sending_messages/main.html'
+
+    def get(self, request, *args, **kwargs):
+        """Обработка get-запроса, рендеринг шаблона страницы"""
+        return render(request, self.template_name)
+
+
 class MailingListRecipientListView(ListView):
     """Список всех получателей"""
     model = MailingListRecipient
@@ -88,7 +97,7 @@ class LetterDeleteView(DeleteView):
 class MailingListView(ListView):
     """Список всех рассылок"""
     model = Mailing
-    template_name = 'sending_messages/mailings_list.html'
+    template_name = 'sending_messages/mailing_list.html'
     context_object_name = 'mailings'
 
 
@@ -104,7 +113,7 @@ class MailingCreateView(CreateView):
     model = Mailing
     fields = ('start_sending', 'end_sending', 'status', 'letter', 'mailing_list_recipient')
     template_name = 'sending_messages/mailing_form.html'
-    success_url = reverse_lazy('sending_messages:mailings_list')
+    success_url = reverse_lazy('sending_messages:mailing_list')
 
 
 class MailingUpdateView(UpdateView):
@@ -112,7 +121,7 @@ class MailingUpdateView(UpdateView):
     model = Mailing
     fields = ('start_sending', 'end_sending', 'status', 'letter', 'mailing_list_recipient')
     template_name = 'sending_messages/mailing_list_form.html'
-    success_url = reverse_lazy('sending_messages:mailings_list')
+    success_url = reverse_lazy('sending_messages:mailing_list')
 
     def get_success_url(self): # перенаправление на просмотр отредактированной рассылки
         return reverse('sending_messages:mailing_detail', args=[self.kwargs.get('pk')])
@@ -122,4 +131,4 @@ class MailingDeleteView(DeleteView):
     """Удаление рассылки"""
     model = Mailing
     template_name = 'sending_messages/mailing_confirm_delete.html'
-    success_url = reverse_lazy('sending_messages:mailings_list')
+    success_url = reverse_lazy('sending_messages:mailing_list')

@@ -21,5 +21,12 @@ class StyleFormMixin:
 
 class UserRegisterForm(StyleFormMixin, UserCreationForm):
     """Форма регистрации пользователя"""
-    model = User
-    fields = ('email', 'password1', 'password2')
+    class Meta:
+        model = User
+        fields = ('email', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # удаляем стандартное поле username, чтобы не было конфликта между
+        # кастомной моделью пользователя и стандартной формой регистрации Django
+        self.fields.pop('username', None)
