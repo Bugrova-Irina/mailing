@@ -23,6 +23,13 @@ class User(AbstractUser):
         null=True,
         help_text='Загрузите изображение для аватара',
     )
+    country = models.CharField(
+        max_length=100,
+        verbose_name='Страна проживания',
+        blank=True,
+        null=True,
+        help_text='Укажите страну проживания',
+    )
     token = models.CharField(
         max_length=100,
         verbose_name='Токен',
