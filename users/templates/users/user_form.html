@@ -27,6 +27,11 @@
                             Регистрация
                             {% endif %}
                         </button>
+                        {% if object %}
+                        <a class="btn btn-outline-primary w-100" href="{% url 'users:profile' user.pk %}" role="button">Назад</a>
+                        {% else %}
+                        <a class="btn btn-outline-primary w-100" href="{% url 'users:login' %}" role="button">Назад</a>
+                        {% endif %}
                     </div>
                 </div>
             </form>
