@@ -109,10 +109,13 @@ class Mailing(models.Model):
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
 
+    def get_letter_title(self):
+        """Получение темы письма с обработкой null"""
+        return self.letter.title if self.letter else "Без темы"
+
     def __str__(self):
         # если тема письма не указана, установить значение "Без темы"
-        letter_title = self.letter.title if self.letter else "Без темы"
-        return f"Рассылка '{letter_title}', статус: '{self.get_status_display()}'"
+        return f"Рассылка '{self.get_letter_title()}', статус: '{self.get_status_display()}'"
 
 
 class AttemptToSend(models.Model):
