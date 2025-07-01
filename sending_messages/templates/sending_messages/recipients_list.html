@@ -12,16 +12,17 @@
 <div class="container">
     <div class="row text-center">
         {% for recipient in recipients %}
-        <div class="col-2">
-        </div>
-        <div class="col-8">
-            <p>{{ recipient.email }}, ФИО - {{ recipient.recipient_name }}</p>
-            <p>{{ recipient.comment | truncatechars:100 }}</p>
-            <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipient_detail' recipient.pk %}">Подробнее</a>
-            <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipient_update' recipient.pk %}">Редактировать</a>
-            <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipient_delete' recipient.pk %}">Удалить</a>
-        </div>
-        <div class="col-2">
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <p>{{ recipient.email }}</p>
+                    <p>ФИО: {{ recipient.recipient_name }}</p>
+                    <p>{{ recipient.comment | truncatechars:100 }}</p>
+                    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipient_detail' recipient.pk %}">Подробнее</a>
+                    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipient_update' recipient.pk %}">Редактировать</a>
+                    <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipient_delete' recipient.pk %}">Удалить</a>
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>

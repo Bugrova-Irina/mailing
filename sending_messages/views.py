@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
-from sending_messages.forms import MailingCreateForm, LetterCreateForm
+from sending_messages.forms import MailingCreateForm, LetterCreateForm, RecipientsCreateForm
 from sending_messages.models import MailingListRecipient, Letter, Mailing
 
 
@@ -32,7 +32,7 @@ class MailingListRecipientDetailView(DetailView):
 class MailingListRecipientCreateView(CreateView):
     """Добавление нового получателя"""
     model = MailingListRecipient
-    fields = ('email', 'recipient_name', 'comment')
+    form_class = RecipientsCreateForm
     template_name = 'sending_messages/recipient_form.html'
     success_url = reverse_lazy('sending_messages:recipients_list')
 
@@ -40,7 +40,7 @@ class MailingListRecipientCreateView(CreateView):
 class MailingListRecipientUpdateView(UpdateView):
     """Редактирование данных получателя"""
     model = MailingListRecipient
-    fields = ('email', 'recipient_name', 'comment')
+    form_class = RecipientsCreateForm
     template_name = 'sending_messages/recipient_form.html'
     success_url = reverse_lazy('sending_messages:recipients_list')
 
@@ -52,7 +52,7 @@ class MailingListRecipientDeleteView(DeleteView):
     """Удаление получателя"""
     model = MailingListRecipient
     template_name = 'sending_messages/recipient_confirm_delete.html'
-    success_url = reverse_lazy('sending_messages:recipient_list')
+    success_url = reverse_lazy('sending_messages:recipients_list')
 
 
 class LetterListView(ListView):

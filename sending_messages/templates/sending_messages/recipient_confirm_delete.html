@@ -7,7 +7,7 @@
         <div class="col-4">
             <form class="row" method="post" enctype="multipart/form-data">
                 <div class="card">
-                    <p class="card-text">Действительно хотите удалить получателя "{{ recipient.recipient_name }}, {{ recipient.email }}"?</p>
+                    <p class="card-text">Действительно хотите удалить получателя "{{ mailinglistrecipient.recipient_name }}, {{ mailinglistrecipient.email }}"?</p>
                     <div class="card-body">
                         {% csrf_token %}
                     </div>
@@ -15,7 +15,7 @@
                 <button type="submit" class="btn btn-lg btn-block btn-outline-primary">
                     Удалить
                 </button>
-                <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:letters_list' %}" role="button">Отменить</a>
+                <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:recipients_list' %}" role="button">Отменить</a>
             </form>
         </div>
         <div class="col-4">
