@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
-from sending_messages.forms import MailingCreateForm
+from sending_messages.forms import MailingCreateForm, LetterCreateForm
 from sending_messages.models import MailingListRecipient, Letter, Mailing
 
 
@@ -72,7 +72,7 @@ class LetterDetailView(DetailView):
 class LetterCreateView(CreateView):
     """Создание нового письма"""
     model = Letter
-    fields = ('title', 'description')
+    form_class = LetterCreateForm
     template_name = 'sending_messages/letter_form.html'
     success_url = reverse_lazy('sending_messages:letters_list')
 
@@ -80,7 +80,7 @@ class LetterCreateView(CreateView):
 class LetterUpdateView(UpdateView):
     """Редактирование письма"""
     model = Letter
-    fields = ('title', 'description')
+    form_class = LetterCreateForm
     template_name = 'sending_messages/letter_form.html'
     success_url = reverse_lazy('sending_messages:letters_list')
 

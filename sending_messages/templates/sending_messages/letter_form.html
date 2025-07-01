@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <div class="row text-center">
+    <div class="row">
         <div class="col-4">
         </div>
         <div class="col-4">
@@ -17,6 +17,7 @@
                     Создать
                     {% endif %}
                 </button>
+                <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:letters_list' %}" role="button">Отменить</a>
             </form>
         </div>
         <div class="col-4">
