@@ -1,7 +1,9 @@
 from django.db import models
 
+
 class MailingListRecipient(models.Model):
     """Получатель рассылки"""
+
     email = models.EmailField(
         unique=True,
         verbose_name="Email",
@@ -19,20 +21,20 @@ class MailingListRecipient(models.Model):
         null=True,
     )
     groups = models.ManyToManyField(
-        'auth.Group',
-        verbose_name='groups',
+        "auth.Group",
+        verbose_name="groups",
         blank=True,
-        help_text='Группы пользователей',
-        related_name='custom_user_groups',
-        related_query_name='user',
+        help_text="Группы пользователей",
+        related_name="custom_user_groups",
+        related_query_name="user",
     )
     user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        verbose_name='user permission',
+        "auth.Permission",
+        verbose_name="user permission",
         blank=True,
-        help_text='Особые права для пользователя',
-        related_name='custom_user_permissions',
-        related_query_name='user',
+        help_text="Особые права для пользователя",
+        related_name="custom_user_permissions",
+        related_query_name="user",
     )
 
     class Meta:
@@ -45,6 +47,7 @@ class MailingListRecipient(models.Model):
 
 class Letter(models.Model):
     """Письмо для рассылки"""
+
     title = models.CharField(
         max_length=300,
         verbose_name="Тема письма",
@@ -65,14 +68,15 @@ class Letter(models.Model):
 
 class Mailing(models.Model):
     """Рассылка"""
+
     # Статусы рассылки
-    CREATED = 'created'
-    STARTED = 'started'
-    COMPLETED = 'completed'
+    CREATED = "created"
+    STARTED = "started"
+    COMPLETED = "completed"
     STATUS_CHOICES = [
-        (CREATED, 'Создана'),
-        (STARTED, 'Запущена'),
-        (COMPLETED, 'Завершена'),
+        (CREATED, "Создана"),
+        (STARTED, "Запущена"),
+        (COMPLETED, "Завершена"),
     ]
 
     start_sending = models.DateTimeField(
@@ -120,12 +124,13 @@ class Mailing(models.Model):
 
 class AttemptToSend(models.Model):
     """Попытка рассылки"""
+
     # Статусы попытки
-    SUCCESS = 'success'
-    FAILED = 'failed'
+    SUCCESS = "success"
+    FAILED = "failed"
     STATUS_CHOICES = [
-        (SUCCESS, 'Успешно'),
-        (FAILED, 'Не успешно'),
+        (SUCCESS, "Успешно"),
+        (FAILED, "Не успешно"),
     ]
 
     attempt_date = models.DateTimeField(
@@ -145,7 +150,7 @@ class AttemptToSend(models.Model):
         help_text="Ответ почтового сервера",
         blank=True,
         null=True,
-        default='Нет данных'
+        default="Нет данных",
     )
     mailing = models.ForeignKey(
         Mailing,
@@ -157,9 +162,11 @@ class AttemptToSend(models.Model):
     class Meta:
         verbose_name = "попытка рассылки"
         verbose_name_plural = "попытки рассылки"
-        ordering = ['-attempt_date'] # Сортировка по умолчанию
+        ordering = ["-attempt_date"]  # Сортировка по умолчанию
 
     def __str__(self):
-        return (f"Попытка рассылки: {self.mailing}, "
-                f"дата: {self.attempt_date.strftime('%Y-%m-%d %H:%M')}, "
-                f"статус: {self.get_status_display()}")
+        return (
+            f"Попытка рассылки: {self.mailing}, "
+            f"дата: {self.attempt_date.strftime('%Y-%m-%d %H:%M')}, "
+            f"статус: {self.get_status_display()}"
+        )
