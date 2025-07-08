@@ -14,12 +14,21 @@ class Command(BaseCommand):
         self.stdout.write(f'== Запуск обработки рассылок в {current_time} ==')
 
         # Автоматическое обновление статусов рассылок
+        # Перевод в статус "Запущена", если текущее время в интервале
+        # между датой старта и датой окончания
+        updated_started = Mailing.objects.filter(
+            status=Mailing.CREATED,
+            start_sending__lt=current_time,
+            end_sending__gt=current_time
+        ).update(status=Mailing.STARTED)
+
+        # Перевод в статус "Завершена", если дата окончания меньше текущего времени
         updated_completed = Mailing.objects.filter(
             status=Mailing.STARTED,
             end_sending__lt=current_time
         ).update(status=Mailing.COMPLETED)
 
-        self.stdout.write(f'Обновлено статусов завершенных рассылок: {updated_completed}')
+        self.stdout.write(f'Обновлено статусов завершенных рассылок: {updated_started}.\nОбновлено статусов завершенных рассылок: {updated_completed}.')
 
         # Поиск активных рассылок для обработки
         active_mailings = Mailing.objects.filter(

@@ -12,9 +12,17 @@ class MainPageView(DetailView):
     """Класс для отображения главной страницы"""
     template_name = 'sending_messages/main.html'
 
-    def get(self, request, *args, **kwargs):
-        """Обработка get-запроса, рендеринг шаблона страницы"""
-        return render(request, self.template_name)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Получаем статистику
+        context['total_mailings'] = Mailing.objects.count()
+        context['active_mailings'] = Mailing.objects.filter(status=Mailing.STARTED).count()
+        context['unique_recipients'] = MailingListRecipient.objects.count()
+        return context
+
+    def get_object(self, queryset=None):
+        # Возвращаем None, так как нам не нужен конкретный объект для отображения
+        return None
 
 
 class MailingListRecipientListView(ListView):
