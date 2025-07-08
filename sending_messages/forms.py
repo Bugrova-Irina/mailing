@@ -1,7 +1,6 @@
-# from django.forms import ModelForm
 from django import forms
 
-from sending_messages.models import Mailing, Letter, MailingListRecipient
+from sending_messages.models import Mailing, Letter, MailingListRecipient, AttemptToSend
 from users.forms import StyleFormMixin
 
 
@@ -93,3 +92,19 @@ class RecipientsCreateForm(StyleFormMixin, forms.ModelForm):
             'placeholder': 'Оставьте свой комментарий'
         })
         self.fields['comment'].help_text = ''
+
+
+class AttemptCreateForm(StyleFormMixin, forms.ModelForm):
+    """Класс для создания попытки отправки рассылки"""
+    class Meta:
+        model = AttemptToSend
+        fields = ('mailing',)
+
+    def __init__(self, *args, **kwargs):
+        super(AttemptCreateForm, self).__init__(*args, **kwargs)
+
+        self.fields['mailing'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Выберите рассылку'
+        })
+        self.fields['mailing'].help_text = ''

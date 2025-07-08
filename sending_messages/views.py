@@ -1,9 +1,11 @@
+from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
-from sending_messages.forms import MailingCreateForm, LetterCreateForm, RecipientsCreateForm
-from sending_messages.models import MailingListRecipient, Letter, Mailing
+from config.settings import EMAIL_HOST_USER
+from sending_messages.forms import MailingCreateForm, LetterCreateForm, RecipientsCreateForm, AttemptCreateForm
+from sending_messages.models import MailingListRecipient, Letter, Mailing, AttemptToSend
 
 
 class MainPageView(DetailView):
@@ -120,8 +122,8 @@ class MailingCreateView(CreateView):
 class MailingUpdateView(UpdateView):
     """Редактирование рассылки"""
     model = Mailing
-    fields = ('start_sending', 'end_sending', 'status', 'letter', 'recipients')
-    template_name = 'sending_messages/mailing_list_form.html'
+    form_class = MailingCreateForm
+    template_name = 'sending_messages/mailing_form.html'
     success_url = reverse_lazy('sending_messages:mailing_list')
 
     def get_success_url(self): # перенаправление на просмотр отредактированной рассылки
@@ -133,3 +135,60 @@ class MailingDeleteView(DeleteView):
     model = Mailing
     template_name = 'sending_messages/mailing_confirm_delete.html'
     success_url = reverse_lazy('sending_messages:mailing_list')
+
+
+class AttemptToSendCreateView(CreateView):
+    """Запуск попытки отправки рассылки"""
+    model = AttemptToSend
+    form_class = AttemptCreateForm
+    template_name = 'sending_messages/attempt_form.html'
+    success_url = reverse_lazy('sending_messages:attempts_list')
+
+    def form_valid(self, form):
+        # создаем объект попытки, но пока не сохраняем
+        attempt = form.save(commit=False)
+        mailing = attempt.mailing
+
+        # Получаем содержимое письма
+        message = mailing.letter.description if mailing.letter else ''
+        subject = mailing.letter.title if mailing.letter else 'Без темы'
+
+        # Получаем список email получателей
+        recipients_emails = mailing.recipients.values_list('email', flat=True)
+
+        try:
+            # отправка письма
+            result = send_mail(
+                subject=subject,
+                message=message,
+                from_email=EMAIL_HOST_USER,
+                recipient_list=list(recipients_emails),
+                fail_silently=False,
+            )
+
+            # Обновляем статус попытки
+            attempt.status = AttemptToSend.SUCCESS
+            attempt.mail_server_response = f'Успешно отправлено {result} писем'
+
+        except Exception as e:
+            # Фиксируем ошибку
+            attempt.status = AttemptToSend.FAILED
+            attempt.mail_server_response = f'Ошибка: {str(e)}'
+
+        # Сохраняем попытку с обновленными данными
+        attempt.save()
+        return super().form_valid(form)
+
+
+class AttemptToSendListView(ListView):
+    """Список попыток отправки рассылок"""
+    model = AttemptToSend
+    template_name = 'sending_messages/attempts_list.html'
+    context_object_name = 'attempts'
+
+
+class AttemptToSendDetailView(DetailView):
+    """Подробная информация о попытке отправки рассылки"""
+    model = AttemptToSend
+    template_name = 'sending_messages/attempt_detail.html'
+    context_object_name = 'attempt'

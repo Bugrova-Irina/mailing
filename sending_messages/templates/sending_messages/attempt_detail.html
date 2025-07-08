@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+            <p>Время попытки: {{ attempt.attempt_date }}</p>
+            <p>Статус попытки: {{ attempt.get_status_display | default:'Неизвестно' }}</p>
+            <p>Ответ сервера: {{ attempt.mail_server_response | default:'Нет данных'|truncatechars:100 }}</p>
+            <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'sending_messages:attempts_list' %}">В каталог попыток</a>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -4,7 +4,8 @@ from sending_messages.apps import SendingMessagesConfig
 from sending_messages.views import MailingListRecipientListView, MailingListRecipientDetailView, \
     MailingListRecipientUpdateView, MailingListRecipientDeleteView, MailingListRecipientCreateView, LetterListView, \
     LetterDetailView, LetterUpdateView, LetterCreateView, LetterDeleteView, MailingListView, MailingCreateView, \
-    MailingDetailView, MailingUpdateView, MailingDeleteView, MainPageView
+    MailingDetailView, MailingUpdateView, MailingDeleteView, MainPageView, AttemptToSendCreateView, \
+    AttemptToSendListView, AttemptToSendDetailView
 
 app_name = SendingMessagesConfig.name
 
@@ -25,4 +26,7 @@ urlpatterns = [
     path('mailing/create/', MailingCreateView.as_view(), name='mailing_create'),
     path('mailing/<int:pk>/update/', MailingUpdateView.as_view(), name='mailing_update'),
     path('mailing/<int:pk>/delete/', MailingDeleteView.as_view(), name='mailing_delete'),
+    path('attempts/create/', AttemptToSendCreateView.as_view(), name='attempt_create'),
+    path('attempts/', AttemptToSendListView.as_view(), name='attempts_list'),
+    path('attempts/<int:pk>/', AttemptToSendDetailView.as_view(), name='attempt_detail'),
 ]

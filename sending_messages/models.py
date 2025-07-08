@@ -138,12 +138,14 @@ class AttemptToSend(models.Model):
         choices=STATUS_CHOICES,
         verbose_name="Статус попытки",
         help_text="Результат попытки отправки",
+        default=FAILED,
     )
     mail_server_response = models.TextField(
         verbose_name="Ответ от сервера",
         help_text="Ответ почтового сервера",
         blank=True,
         null=True,
+        default='Нет данных'
     )
     mailing = models.ForeignKey(
         Mailing,
