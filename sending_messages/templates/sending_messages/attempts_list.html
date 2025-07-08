@@ -18,6 +18,13 @@
 </section>
 <div class="container">
     <div class="row text-center">
+        <div class="col-12">
+            <p>Количество успешных попыток рассылок: {{ success_attempts }}</p>
+            <p>Количество неудачных попыток рассылок: {{ wrong_attempts }}</p>
+            <p>Количество отправленных сообщений: {{ success_attempts }}</p>
+        </div>
+    </div>
+    <div class="row text-center">
         {% for attempt in attempts %}
         <div class="col-4">
             <div class="card mb-4 box-shadow">

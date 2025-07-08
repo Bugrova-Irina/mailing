@@ -194,6 +194,13 @@ class AttemptToSendListView(ListView):
     template_name = 'sending_messages/attempts_list.html'
     context_object_name = 'attempts'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Получаем статистику
+        context['success_attempts'] = AttemptToSend.objects.filter(status=AttemptToSend.SUCCESS).count()
+        context['wrong_attempts'] = AttemptToSend.objects.filter(status=AttemptToSend.FAILED).count()
+        return context
+
 
 class AttemptToSendDetailView(DetailView):
     """Подробная информация о попытке отправки рассылки"""
