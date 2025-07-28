@@ -1,48 +1,6 @@
 [
   {
     "model": "users.user",
-    "pk": 3,
-    "fields": {
-      "password": "pbkdf2_sha256$1000000$cPuV2amLbmJH8ygLMLdiFB$5jpXXNtcXAQ58id54dLoU2Csa7i8A8BlwdDqA3r3qP0=",
-      "last_login": "2025-07-17T18:13:38.916Z",
-      "is_superuser": false,
-      "first_name": "User",
-      "last_name": "Ordinary",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2025-07-14T16:02:38.164Z",
-      "email": "inkanto81@rambler.ru",
-      "phone": null,
-      "avatar": "",
-      "country": null,
-      "token": "4bdea42f5d039595aaf3a41817861578",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "users.user",
-    "pk": 2,
-    "fields": {
-      "password": "pbkdf2_sha256$1000000$ED21ze3fAR1DIpiUi3VzFr$SZE2dX/98T0GNpfXrE1olQF+vZjZfl22LfbSx/JViVg=",
-      "last_login": "2025-07-18T08:53:25.627Z",
-      "is_superuser": false,
-      "first_name": "Ирина",
-      "last_name": "Бугрова",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2025-07-11T11:35:25Z",
-      "email": "agency-bugrova@yandex.ru",
-      "phone": null,
-      "avatar": "",
-      "country": "Россия",
-      "token": "91a9f16e20b2a46d21a4c87e0824d90d",
-      "groups": ["managers"],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "users.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$1000000$SlYlnPDXx1H3hC7bQdi56K$WSwTdEKEHz5W3iAnsSNrLLb08fSnccHMXJfLGxTc83U=",

@@ -28,12 +28,6 @@ class Command(BaseCommand):
         users_data = [
             # Обычные пользователи
             {
-                "email": "inkanto81@rambler.ru",
-                "first_name": "User",
-                "last_name": "Ordinary",
-                "is_manager": False
-            },
-            {
                 "email": "test1@example.com",
                 "first_name": "Алла",
                 "last_name": "Быкова",
@@ -41,12 +35,6 @@ class Command(BaseCommand):
             },
 
             # Менеджеры
-            {
-                "email": "agency-bugrova@yandex.ru",
-                "first_name": "Ирина",
-                "last_name": "Бугрова",
-                "is_manager": True
-            },
             {
                 "email": "test2@example.com",
                 "first_name": "Сергей",
@@ -59,15 +47,6 @@ class Command(BaseCommand):
                 "last_name": "Кочкин",
                 "is_manager": True
             },
-
-            # Администратор
-            {
-                "email": "admin@example.com",
-                "first_name": "Admin",
-                "last_name": "Admin",
-                "is_superuser": True,
-                "is_staff": True
-            }
         ]
 
         # Создаем пользователей
