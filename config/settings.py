@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "sending_messages",
+    "mailings",
 ]
 
 MIDDLEWARE = [
@@ -151,5 +151,23 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 AUTH_USER_MODEL = "users.User"
 
-LOGIN_REDIRECT_URL = "sending_messages:main"
+LOGIN_REDIRECT_URL = "mailings:main"
 LOGOUT_REDIRECT_URL = "users:login"
+LOGIN_URL = "/users/login/"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    },
+}

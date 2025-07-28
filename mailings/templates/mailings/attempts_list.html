@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h2>
+                Список попыток отправки рассылок
+            </h2>
+        </div>
+    </div>
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <p>
+                <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:attempt_create' %}">Создать попытку</a>
+            </p>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row text-center">
+        <div class="col-12">
+            <h4>Количество успешных попыток рассылок: {{ success_attempts }}</h4>
+            <h4>Количество неудачных попыток рассылок: {{ wrong_attempts }}</h4>
+            <h4>Общее количество отправленных сообщений: {{ total_emails_sent }}</h4>
+        </div>
+    </div>
+    <div class="row text-center py-lg-5">
+        {% for attempt in attempts %}
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ attempt.mailing }}</h4>
+                </div>
+                <div class="card-body">
+                        <p>Время попытки: {{ attempt.attempt_date }}</p>
+                        <p>Статус попытки: {{ attempt.get_status_display | default:'Неизвестно' }}</p>
+                        <p>Ответ сервера: {{ attempt.mail_server_response | default:'Нет данных'|truncatechars:100 }}</p>
+                        <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'mailings:attempt_detail' attempt.pk %}">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <h3>У вас пока нет попыток рассылок</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

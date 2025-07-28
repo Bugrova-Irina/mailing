@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h2>Каталог рассылок</h2>
+        </div>
+    </div>
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <p>
+                <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:mailing_create' %}">
+                    Добавить рассылку
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row text-center">
+        {% for mailing in mailings %}
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ mailing.letter.title | default:'Без темы' }}</h4>
+                </div>
+                <div class="card-body">
+                    <p>Дата старта: {{ mailing.start_sending }}</p>
+                    <p>Дата завершения: {{ mailing.end_sending }}</p>
+                    <p>Статус: {{ mailing.status }}</p>
+                    {% if request.user == mailing.owner or perms.users.can_disable_user %}
+                        <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'mailings:mailing_detail' mailing.pk %}">Подробнее</a>
+                        <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'mailings:mailing_update' mailing.pk %}">Редактировать</a>
+                    {% endif %}
+                    {% if request.user == mailing.owner %}
+                        <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'mailings:mailing_delete' mailing.pk %}">Удалить</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

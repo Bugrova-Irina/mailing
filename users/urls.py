@@ -13,7 +13,7 @@ from users.views import (
     UserCreateView,
     UserDetailView,
     UserUpdateView,
-    email_verification,
+    email_verification, UserListView,
 )
 
 app_name = UsersConfig.name
@@ -21,7 +21,7 @@ app_name = UsersConfig.name
 urlpatterns = [
     path("login/", LoginView.as_view(template_name="login.html"), name="login"),
     path(
-        "logout/", LogoutView.as_view(next_page="sending_messages:main"), name="logout"
+        "logout/", LogoutView.as_view(next_page="mailings:main"), name="logout"
     ),
     path("register/", UserCreateView.as_view(), name="register"),
     path("email-confirm/<str:token>/", email_verification, name="email-confirm"),
@@ -56,4 +56,5 @@ urlpatterns = [
     ),
     path("profile/<int:pk>/", UserDetailView.as_view(), name="profile"),
     path("profile/<int:pk>/update/", UserUpdateView.as_view(), name="profile_update"),
+    path("profiles/", UserListView.as_view(), name="profiles"),
 ]

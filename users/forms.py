@@ -36,7 +36,7 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
     def clean_email(self):
         """Проверяем email нового пользователя на уникальность"""
         email = self.cleaned_data["email"]
-        if get_user_model().objects.filter(email=email).exists:
+        if get_user_model().objects.filter(email=email).exists():
             raise forms.ValidationError("Такой E-mail уже существует!")
         return email
 
@@ -52,4 +52,14 @@ class UserForm(StyleFormMixin, ModelForm):
             "phone",
             "country",
             "avatar",
+        )
+
+
+class ManagerForm(StyleFormMixin, ModelForm):
+    """Форма редактирования пользователя менеджером"""
+
+    class Meta:
+        model = User
+        fields = (
+            "is_active",
         )

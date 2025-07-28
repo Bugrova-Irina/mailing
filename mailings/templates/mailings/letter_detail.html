@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+            <h4>Тема письма: {{ letter.title }}</h4>
+            <p>{{ letter.description }}</p>
+            <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'mailings:letters_list' %}">В каталог сообщений</a>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+</div>
+{% endblock %}

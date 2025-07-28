@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h2>Список пользователей приложения</h2>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row text-center">
+        {% for user in users %}
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ user.first_name }} {{ user.last_name }}</h4>
+                </div>
+                <div class="card-body">
+                    <p>Email: {{ user.email }}</p>
+                    <p>Активен или нет: {{ user.is_active }}</p>
+                    {% if request.user == user or perms.users.can_disable_user %}
+                        <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'users:profile' user.pk %}">Подробнее</a>
+                        <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'users:profile_update' user.pk %}">Редактировать</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -23,8 +23,8 @@ from django.urls import include, path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(
-        "sending_messages/",
-        include("sending_messages.urls", namespace="sending_messages"),
+        "mailings/",
+        include("mailings.urls", namespace="mailings"),
     ),
     path("users/", include("users.urls", namespace="users")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
