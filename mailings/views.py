@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -52,10 +51,8 @@ class RecipientsListView(LoginRequiredMixin, ListView):
         Менеджеры видят всех клиентов, пользователи - только тех,
         которых создали сами
         """
-        if self.request.user.groups.filter(name='managers').exists():
-            return Recipients.objects.all() # Менеджер видит всех
-        # Пользователь - только своих
-        return Recipients.objects.filter(owner=self.request.user)
+        from .services import get_cached_recipients
+        return get_cached_recipients(self.request.user)
 
 
 class RecipientsDetailView(DetailView):
@@ -137,10 +134,8 @@ class LetterListView(LoginRequiredMixin, ListView):
         Менеджеры видят все письма, пользователи - только те,
         которые создали сами
         """
-        if self.request.user.groups.filter(name='managers').exists():
-            return Letter.objects.all() # Менеджер видит всех
-        # Пользователь - только своих
-        return Letter.objects.filter(owner=self.request.user)
+        from .services import get_cached_letters
+        return get_cached_letters(self.request.user)
 
 
 class LetterDetailView(DetailView):
@@ -218,12 +213,8 @@ class MailingListView(LoginRequiredMixin, ListView):
         Менеджеры видят все рассылки, пользователи - только те,
         которые создали сами
         """
-        if self.request.user.is_superuser:
-            return Mailing.objects.all()
-        if self.request.user.has_perm('users.can_disable_user'):
-            return Mailing.objects.all() # Менеджер видит всех
-        # Пользователь - только своих
-        return Mailing.objects.filter(owner=self.request.user)
+        from .services import get_cached_mailings
+        return get_cached_mailings(self.request.user)
 
 
 class MailingDetailView(DetailView):
@@ -360,28 +351,23 @@ class AttemptToSendListView(LoginRequiredMixin, ListView):
         """
         Менеджеры видят все попытки, пользователи - только свои
         """
-        queryset = super().get_queryset()
-        if self.request.user.is_superuser or self.request.user.has_perm('users.can_disable_user'):
-            return queryset
-        return queryset.filter(owner=self.request.user)
+        from .services import get_cached_attempts
+        return get_cached_attempts(self.request.user)
 
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
             # Получаем queryset с учетом фильтрации
-            attempts = self.get_queryset()
-
+            attempts = self.get_queryset() # Используем кешированный queryset
             # Получаем статистику по отфильтрованным попыткам
-            context["success_attempts"] = attempts.filter(
-                status=AttemptToSend.SUCCESS
-            ).count() # Успешные попытки
-            context["wrong_attempts"] = attempts.filter(
-                status=AttemptToSend.FAILED
-            ).count() # Неудачные попытки
-
+            context["success_attempts"] = sum(
+                1 for a in attempts if a.status == AttemptToSend.SUCCESS
+            ) # Успешные попытки
+            context["wrong_attempts"] = sum(
+                1 for a in attempts if a.status == AttemptToSend.FAILED
+            ) # Неудачные попытки
             # Общее количество отправленных сообщений
             context["total_emails_sent"] = sum(
-                attempt.emails_sent for attempt in attempts
-                if attempt.status == AttemptToSend.SUCCESS
+                a.emails_sent for a in attempts if a.status == AttemptToSend.SUCCESS
             )
 
             return context
