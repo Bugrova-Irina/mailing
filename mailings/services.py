@@ -63,5 +63,5 @@ def get_cached_attempts(user):
     if attempts is None:
         attempts = list(AttemptToSend.objects.all() if user.is_superuser or user.has_perm(
             'users.can_disable_user') else AttemptToSend.objects.filter(owner=user))
-        cache.set(key, attempts, timeout=60 * 5)
+        cache.set(key, attempts, timeout=60 * 1)
     return attempts
