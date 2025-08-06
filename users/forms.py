@@ -60,6 +60,4 @@ class ManagerForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = User
-        fields = (
-            "is_active",
-        )
+        fields = ("is_active",)

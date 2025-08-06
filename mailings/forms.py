@@ -60,15 +60,12 @@ class MailingManagerUpdateForm(StyleFormMixin, forms.ModelForm):
     Класс для редактирования рассылки
     с возможностью перевода в статус 'Завершена'
     """
+
     class Meta:
         model = Mailing
         fields = ("status",)
-        labels = {
-            "status": "Статус рассылки"
-        }
-        help_texts = {
-            "status": "Только для изменения статуса менеджером"
-        }
+        labels = {"status": "Статус рассылки"}
+        help_texts = {"status": "Только для изменения статуса менеджером"}
 
 
 class LetterCreateForm(StyleFormMixin, forms.ModelForm):

@@ -33,11 +33,11 @@ class Recipients(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        verbose_name='Владелец',
-        help_text='Укажите владельца клиента',
+        verbose_name="Владелец",
+        help_text="Укажите владельца клиента",
         blank=True,
         null=True,
-        related_name='recipients'
+        related_name="recipients",
     )
 
     class Meta:
@@ -63,11 +63,11 @@ class Letter(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        verbose_name='Владелец',
-        help_text='Укажите владельца письма',
+        verbose_name="Владелец",
+        help_text="Укажите владельца письма",
         blank=True,
         null=True,
-        related_name='letters'
+        related_name="letters",
     )
 
     class Meta:
@@ -123,18 +123,18 @@ class Mailing(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        verbose_name='Владелец',
-        help_text='Укажите владельца рассылки',
+        verbose_name="Владелец",
+        help_text="Укажите владельца рассылки",
         blank=True,
         null=True,
-        related_name='mailings'
+        related_name="mailings",
     )
 
     class Meta:
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
         permissions = [
-            ('can_complete_mailing', 'Can complete mailing'),
+            ("can_complete_mailing", "Can complete mailing"),
         ]
 
     def get_letter_title(self):
@@ -185,16 +185,16 @@ class AttemptToSend(models.Model):
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
-        verbose_name='Владелец',
-        help_text='Укажите владельца попытки',
+        verbose_name="Владелец",
+        help_text="Укажите владельца попытки",
         blank=True,
         null=True,
-        related_name='attempt'
+        related_name="attempt",
     )
     emails_sent = models.PositiveIntegerField(
-        verbose_name='Количество отправленных сообщений',
+        verbose_name="Количество отправленных сообщений",
         default=0,
-        help_text='Количество успешно отправленных сообщений в этой попытке'
+        help_text="Количество успешно отправленных сообщений в этой попытке",
     )
 
     class Meta:

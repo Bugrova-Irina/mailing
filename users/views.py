@@ -1,14 +1,14 @@
 import secrets
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
-from users.forms import UserForm, UserRegisterForm, ManagerForm
+from users.forms import ManagerForm, UserForm, UserRegisterForm
 from users.models import User
 
 
@@ -34,8 +34,8 @@ class UserListView(LoginRequiredMixin, ListView):
 
         if self.request.user.is_superuser:
             return User.objects.all()
-        if self.request.user.has_perm('users.can_disable_user'):
-            return User.objects.all() # Менеджер видит всех
+        if self.request.user.has_perm("users.can_disable_user"):
+            return User.objects.all()  # Менеджер видит всех
         # Пользователь - только свой профиль
         return User.objects.filter(pk=self.request.user.pk)
 
@@ -47,22 +47,26 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         user = self.request.user
-        target_user = get_object_or_404(User, pk = self.kwargs['pk'])
+        target_user = get_object_or_404(User, pk=self.kwargs["pk"])
 
         # Разрешаем доступ, если:
         # 1. Пользователь - суперпользователь
         # 2. Пользователь - менеджер (с правом can_disable_user)
         # 3. Пользователь редактирует свой собственный профиль
-        if user.is_superuser or user.has_perm('users.can_disable_user') or user.pk == target_user.pk:
+        if (
+            user.is_superuser
+            or user.has_perm("users.can_disable_user")
+            or user.pk == target_user.pk
+        ):
             return target_user
-        raise PermissionDenied('У вас нет прав для редактирования этого профиля')
+        raise PermissionDenied("У вас нет прав для редактирования этого профиля")
 
     def get_form_class(self):
         user = self.request.user
         # Получаем пользователя, которого редактируем
         target_user = self.get_object()
         # Если менеджер редактирует не свой профиль
-        if user.has_perm('users.can_disable_user') and user.pk != target_user.pk:
+        if user.has_perm("users.can_disable_user") and user.pk != target_user.pk:
             return ManagerForm
         # Во всех остальных случаях свой профиль или обычный пользователь
         return UserForm

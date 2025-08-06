@@ -13,14 +13,14 @@ from mailings.views import (
     MailingCreateView,
     MailingDeleteView,
     MailingDetailView,
+    MailingListView,
+    MailingUpdateView,
+    MainPageView,
     RecipientsCreateView,
     RecipientsDeleteView,
     RecipientsDetailView,
     RecipientsListView,
     RecipientsUpdateView,
-    MailingListView,
-    MailingUpdateView,
-    MainPageView,
 )
 
 app_name = MailingsConfig.name

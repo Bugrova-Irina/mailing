@@ -14,7 +14,8 @@ from mailings.forms import (
     AttemptCreateForm,
     LetterCreateForm,
     MailingCreateForm,
-    RecipientsCreateForm, MailingManagerUpdateForm,
+    MailingManagerUpdateForm,
+    RecipientsCreateForm,
 )
 from mailings.models import AttemptToSend, Letter, Mailing, Recipients
 
@@ -52,6 +53,7 @@ class RecipientsListView(LoginRequiredMixin, ListView):
         которых создали сами
         """
         from .services import get_cached_recipients
+
         return get_cached_recipients(self.request.user)
 
 
@@ -92,7 +94,7 @@ class RecipientsUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("mailings:recipients_list")
 
     def get_form_class(self):
-        recipient = self.get_object() # Получаем текущего пользователя
+        recipient = self.get_object()  # Получаем текущего пользователя
         user = self.request.user
 
         # если авторизован владелец клиента, он может его редактировать
@@ -102,9 +104,7 @@ class RecipientsUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(
         self,
     ):  # перенаправление на просмотр отредактированного получателя
-        return reverse(
-            "mailings:recipient_detail", args=[self.kwargs.get("pk")]
-        )
+        return reverse("mailings:recipient_detail", args=[self.kwargs.get("pk")])
 
 
 class RecipientsDeleteView(LoginRequiredMixin, DeleteView):
@@ -135,6 +135,7 @@ class LetterListView(LoginRequiredMixin, ListView):
         которые создали сами
         """
         from .services import get_cached_letters
+
         return get_cached_letters(self.request.user)
 
 
@@ -214,6 +215,7 @@ class MailingListView(LoginRequiredMixin, ListView):
         которые создали сами
         """
         from .services import get_cached_mailings
+
         return get_cached_mailings(self.request.user)
 
 
@@ -254,12 +256,16 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("mailings:mailing_list")
 
     def get_form_class(self):
-        mailing = self.get_object() # получаем текущую рассылку
+        mailing = self.get_object()  # получаем текущую рассылку
         user = self.request.user
 
         # если авторизован менеджер и он не владелец рассылки,
         # загружается форма для изменения статуса рассылки
-        if user.has_perm('users.can_disable_user') and not user.is_superuser and mailing.owner != user:
+        if (
+            user.has_perm("users.can_disable_user")
+            and not user.is_superuser
+            and mailing.owner != user
+        ):
             return MailingManagerUpdateForm
         return MailingCreateForm
 
@@ -295,7 +301,7 @@ class AttemptToSendCreateView(LoginRequiredMixin, CreateView):
         attempt = form.save(commit=False)
         mailing = attempt.mailing
 
-        #Устанавливаем владельца попытки
+        # Устанавливаем владельца попытки
         attempt.owner = self.request.user
 
         # Получаем содержимое письма
@@ -304,7 +310,7 @@ class AttemptToSendCreateView(LoginRequiredMixin, CreateView):
 
         # Получаем список email получателей
         recipients_emails = list(mailing.recipients.values_list("email", flat=True))
-        total_recipients = len(recipients_emails) # Сохраняем количество получателей
+        total_recipients = len(recipients_emails)  # Сохраняем количество получателей
 
         # Сохраняем количество получателей до попытки рассылки
         attempt.emails_sent = total_recipients
@@ -321,7 +327,9 @@ class AttemptToSendCreateView(LoginRequiredMixin, CreateView):
 
             # Обновляем статус попытки
             attempt.status = AttemptToSend.SUCCESS
-            attempt.mail_server_response = f"Успешно отправлено письмо для {total_recipients} получателей"
+            attempt.mail_server_response = (
+                f"Успешно отправлено письмо для {total_recipients} получателей"
+            )
 
             # Для успешной отправки количество отправленных сообщений =
             # количеству получателей (result всегда будет = 1, т.к.
@@ -352,29 +360,31 @@ class AttemptToSendListView(LoginRequiredMixin, ListView):
         Менеджеры видят все попытки, пользователи - только свои
         """
         from .services import get_cached_attempts
+
         return get_cached_attempts(self.request.user)
 
     def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            # Получаем queryset с учетом фильтрации
-            attempts = self.get_queryset() # Используем кешированный queryset
-            # Получаем статистику по отфильтрованным попыткам
-            context["success_attempts"] = sum(
-                1 for a in attempts if a.status == AttemptToSend.SUCCESS
-            ) # Успешные попытки
-            context["wrong_attempts"] = sum(
-                1 for a in attempts if a.status == AttemptToSend.FAILED
-            ) # Неудачные попытки
-            # Общее количество отправленных сообщений
-            context["total_emails_sent"] = sum(
-                a.emails_sent for a in attempts if a.status == AttemptToSend.SUCCESS
-            )
+        context = super().get_context_data(**kwargs)
+        # Получаем queryset с учетом фильтрации
+        attempts = self.get_queryset()  # Используем кешированный queryset
+        # Получаем статистику по отфильтрованным попыткам
+        context["success_attempts"] = sum(
+            1 for a in attempts if a.status == AttemptToSend.SUCCESS
+        )  # Успешные попытки
+        context["wrong_attempts"] = sum(
+            1 for a in attempts if a.status == AttemptToSend.FAILED
+        )  # Неудачные попытки
+        # Общее количество отправленных сообщений
+        context["total_emails_sent"] = sum(
+            a.emails_sent for a in attempts if a.status == AttemptToSend.SUCCESS
+        )
 
-            return context
+        return context
 
 
 class AttemptToSendDetailView(LoginRequiredMixin, DetailView):
     """Подробная информация о попытке отправки рассылки"""
+
     model = AttemptToSend
     template_name = "mailings/attempt_detail.html"
     context_object_name = "attempt"
@@ -384,8 +394,10 @@ class AttemptToSendDetailView(LoginRequiredMixin, DetailView):
         Проверяем, имеет ли право пользователь просматривать эту попытку
         """
         obj = self.get_object()
-        if not (request.user.is_superuser or
-                request.user.has_perm('users.can_disable_user') or
-                obj.owner == request.user):
+        if not (
+            request.user.is_superuser
+            or request.user.has_perm("users.can_disable_user")
+            or obj.owner == request.user
+        ):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
