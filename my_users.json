@@ -1,0 +1,90 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$SlYlnPDXx1H3hC7bQdi56K$WSwTdEKEHz5W3iAnsSNrLLb08fSnccHMXJfLGxTc83U=",
+      "last_login": "2025-07-18T10:05:00.299Z",
+      "is_superuser": true,
+      "first_name": "Admin",
+      "last_name": "Admin",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-07-11T11:06:16.784Z",
+      "email": "admin@example.com",
+      "phone": null,
+      "avatar": "",
+      "country": null,
+      "token": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$Bozqy5uKQawLw89SOYz5vp$pN3f07CBgAmPcAhLIOo1VWWe54GxrvM8jRB9VIX+SD0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Андрей",
+      "last_name": "Кочкин",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-18T10:08:37Z",
+      "email": "test3@example.com",
+      "phone": null,
+      "avatar": "",
+      "country": null,
+      "token": null,
+      "groups": [
+        "managers"
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$nqN4PzVt8nP29sMsHXuB7n$t+J6fIdWfJOTO0XBM5EBGZnWkmE/t2GcJibtWbCpA4M=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Сергей",
+      "last_name": "Васнецов",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-18T10:07:51Z",
+      "email": "test2@example.com",
+      "phone": null,
+      "avatar": "",
+      "country": null,
+      "token": null,
+      "groups": [
+        "managers"
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$rjB2LLRwqoTyAe2lwTMyLp$E/2mdrKuIiy4quqPRYJAoQT59g7Mi6EEEIi4oq3Kb8E=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Алла",
+      "last_name": "Быкова",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-18T10:06:54Z",
+      "email": "test1@example.com",
+      "phone": null,
+      "avatar": "",
+      "country": null,
+      "token": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

@@ -12,6 +12,8 @@ pillow = "^11.2.1"
 python-dotenv = "^1.1.0"
 psycopg2 = "^2.9.10"
 ipython = "^9.2.0"
+isort = "^6.0.1"
+redis = "^6.3.0"
 
 
 [tool.poetry.group.lint.dependencies]

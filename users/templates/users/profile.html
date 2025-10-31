@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <h1>Профиль</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+            <div class="card">
+                {% if profile_user.avatar %}
+                    <img src="{{ profile_user.avatar.url }}" alt="Аватар пользователя">
+                {% else %}
+                    <img src="{% static 'users/avatars/default.png' %}" alt="Аватар по умолчанию">
+                {% endif %}
+                <div class="card-body">
+                    <p class="card-text">Фамилия: {{ profile_user.last_name }}</p>
+                    <p class="card-text">Имя: {{ profile_user.first_name }}</p>
+                    <p class="card-text">E-mail: {{ profile_user.email }}</p>
+                    <p class="card-text">Телефон: {{ profile_user.phone }}</p>
+                    <p class="card-text">Страна: {{ profile_user.country }}</p>
+                    <div class="card-text text-center">
+                        {% if request.user == profile_user or perms.users.can_disable_user %}
+                            <a class="btn btn-outline-primary w-100" href="{% url 'users:profile_update' profile_user.pk %}" role="button">Редактировать</a>
+                            <a class="btn btn-outline-primary w-100" href="{% url 'users:profiles' %}" role="button">В каталог пользователей</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
