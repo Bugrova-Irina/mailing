@@ -1,4 +1,4 @@
-# Интернет-магазин на Django
+# Web-приложение для рассылки писем
 python manage.py runserver - запуск веб-приложения. Ctrl+C - остановка сервера.
 
 python manage.py createadmin - создание суперпользователя
@@ -45,7 +45,7 @@ python manage.py add_users - создание тестовых пользова�
 
 1. Клонируйте репозиторий:
 ```
-https://github.com/Bugrova-Irina/coursework_django_web/
+https://github.com/Bugrova-Irina/mailing/
 ```
 2. Установите зависимости:
 ```
